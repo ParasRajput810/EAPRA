@@ -1,0 +1,45 @@
+# ---- OS ----
+.DS_Store
+Thumbs.db
+
+# ---- IDE / Editors ----
+.idea/
+.vscode/
+*.swp
+*~
+
+# ---- Python ----
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# ---- Go ----
+bin/
+*.exe
+*.test
+*.out
+vendor/
+
+# ---- Node ----
+node_modules/
+dist/
+.npm/
+*.log
+
+# ---- Terraform ----
+.terraform/
+*.tfstate
+*.tfstate.*
+crash.log
+*.tfvars
+
+# ---- Secrets / Env (never commit) ----
+.env
+*.env
+!*.env.example
