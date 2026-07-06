@@ -64,6 +64,18 @@ model framework, or researchers focused on training and fine-tuning models.
 > repository shows *where the project is headed* - its direction and design - not
 > a finished, adopted system.
 
+## Architecture overview
+
+EAPRA's architecture is organized around a small set of core concepts - **three
+planes**, **two envelopes**, and the **Five Currencies**. These are being
+finalized in **Whitepaper 001**, which is the single source of truth for the
+model.
+
+To avoid two documents drifting apart, this section intentionally does **not**
+define those concepts yet. The full architecture - with diagrams and the
+executable mapping - will land here once the whitepaper is locked. See
+[`docs/architecture/`](./docs/architecture) for progress.
+
 ## License
 
 Licensed under the [Apache License 2.0](./LICENSE).
