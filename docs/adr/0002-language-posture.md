@@ -1,7 +1,7 @@
 ---
 status: "accepted"
 date: 2026-07-06
-deciders: [Paras Rajput]
+deciders: [The EAPRA Authors]
 ---
 
 # 0002. Language posture: Go core, polyglot plugins over a network SPI

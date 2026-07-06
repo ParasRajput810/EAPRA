@@ -1,7 +1,7 @@
 ---
 status: "accepted"
 date: 2026-07-06
-deciders: [Paras Rajput]
+deciders: [The EAPRA Authors]
 ---
 
 # 0001. Adopt MADR for Architecture Decision Records

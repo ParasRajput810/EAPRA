@@ -1,7 +1,7 @@
 ---
 status: "accepted"
 date: 2026-07-06
-deciders: [Paras]
+deciders: [The EAPRA Authors]
 ---
 
 # 0003. Build vs. integrate: build the decide-and-meter control layer, integrate every substrate

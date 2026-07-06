@@ -1,7 +1,7 @@
 ---
 status: "accepted"
 date: 2026-07-06
-deciders: [Paras Rajput]
+deciders: [The EAPRA Authors]
 ---
 
 # 0004. First adapter: an OpenAI-compatible chat adapter, traced with OpenTelemetry GenAI
