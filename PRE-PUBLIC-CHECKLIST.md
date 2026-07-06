@@ -15,10 +15,13 @@ temporary answers do not silently become permanent.
 - [ ] **Land the Architecture section.** Replace the placeholder in `README.md`
       and `docs/architecture/` once Whitepaper 001 finalizes the three planes,
       two envelopes, and Five Currencies.
-- [ ] **Reformat ADR-0001…0005 into MADR.** Re-express the five kickoff ADRs in
-      the canonical MADR template so `docs/adr/` has one consistent format.
+- [ ] **Reformat the remaining kickoff ADRs into MADR.** ADR-0001-0004 (language
+      posture, build-vs-integrate, first adapter) are now authored directly in
+      MADR. Reformat the remaining kickoff decisions (0005, 0006) into the
+      canonical template so `docs/adr/` stays single-format.
 
 ## Deferred by dependency
 
-- [ ] **Write the full `CONTRIBUTING.md`.** Held until three forks are confirmed:
-      language posture, build-vs-integrate, and the first adapter.
+- [ ] **Write the full `CONTRIBUTING.md`.** Three forks now confirmed (language
+      posture, build-vs-integrate, first adapter), so this is unblocked pending
+      the walking skeleton for accurate dev-setup and test instructions.
