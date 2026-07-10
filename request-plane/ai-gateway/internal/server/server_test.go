@@ -18,7 +18,8 @@ type shouty struct{}
 func (shouty) Name() string { return "shouty" }
 func (shouty) Complete(_ context.Context, req provider.Request) (provider.Response, error) {
 	last := req.Messages[len(req.Messages)-1].Content
-	return provider.Response{Model: req.Model, Content: strings.ToUpper(last) + "!!!"}, nil
+	c := strings.ToUpper(last) + "!!!"
+	return provider.Response{Model: req.Model, Content: c, InputTokens: 1, OutputTokens: 1}, nil
 }
 
 func call(t *testing.T, p provider.Provider, body string) (*httptest.ResponseRecorder, map[string]any) {
@@ -53,3 +54,34 @@ func TestMissingMessagesIsRejected(t *testing.T) {
 
 var _ provider.Provider = (*stub.Provider)(nil)
 var _ provider.Provider = shouty{}
+
+func TestResponseReportsUsage(t *testing.T) {
+	_, got := call(t, stub.New(), okBody)
+	usage, ok := got["usage"].(map[string]any)
+	if !ok {
+		t.Fatal("every response must report usage")
+	}
+	in := usage["input_tokens"].(float64)
+	out := usage["output_tokens"].(float64)
+	tot := usage["total_tokens"].(float64)
+	if in == 0 || out == 0 {
+		t.Error("tokens must be counted")
+	}
+	if tot != in+out {
+		t.Errorf("total %v != %v + %v", tot, in, out)
+	}
+}
+
+func TestLongerPromptsCostMore(t *testing.T) {
+	p := stub.New()
+	short, _ := p.Complete(context.Background(), provider.Request{
+		Model: "m", Messages: []provider.Message{{Role: "user", Content: "hi"}}})
+	long, _ := p.Complete(context.Background(), provider.Request{
+		Model: "m", Messages: []provider.Message{{Role: "user",
+			Content: "this is a considerably longer prompt that costs a great deal more to process"}}})
+
+	if long.InputTokens <= short.InputTokens {
+		t.Fatalf("long prompt (%d tokens) must cost more than short (%d) -- yet both are ONE request",
+			long.InputTokens, short.InputTokens)
+	}
+}

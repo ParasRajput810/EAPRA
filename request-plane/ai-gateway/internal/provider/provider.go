@@ -13,8 +13,10 @@ type Request struct {
 }
 
 type Response struct {
-	Model   string
-	Content string
+	Model        string
+	Content      string
+	InputTokens  int
+	OutputTokens int
 }
 
 type Provider interface {
