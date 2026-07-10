@@ -3,19 +3,18 @@ package server
 import (
 	"encoding/json"
 	"net/http"
+
+	"github.com/eapra/eapra/request-plane/ai-gateway/internal/provider"
 )
 
-type Message struct {
-	Role    string `json:"role"`
-	Content string `json:"content"`
-}
-
 type chatRequest struct {
-	Model    string    `json:"model"`
-	Messages []Message `json:"messages"`
+	Model    string             `json:"model"`
+	Messages []provider.Message `json:"messages"`
 }
 
-type Server struct{}
+type Server struct {
+	Provider provider.Provider
+}
 
 func (s *Server) Routes() http.Handler {
 	mux := http.NewServeMux()
@@ -29,6 +28,13 @@ func (s *Server) handleHealth(w http.ResponseWriter, _ *http.Request) {
 }
 
 func (s *Server) handleChat(w http.ResponseWriter, r *http.Request) {
+	
+	if s.Provider == nil {
+	writeJSON(w, http.StatusInternalServerError,
+		errBody("internal_error", "provider is not configured"))
+	return
+	}
+	
 	var req chatRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		writeJSON(w, http.StatusBadRequest, errBody("invalid_request", "malformed JSON body"))
@@ -39,11 +45,17 @@ func (s *Server) handleChat(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// The model, hardcoded. The gateway KNOWS what it is. It cannot be swapped.
-	last := req.Messages[len(req.Messages)-1].Content
+
+	resp, err := s.Provider.Complete(r.Context(), provider.Request{Model: req.Model, Messages: req.Messages})
+	if err != nil {
+		writeJSON(w, http.StatusBadGateway, errBody("provider_error", err.Error()))
+		return
+	}
+
 	writeJSON(w, http.StatusOK, map[string]any{
-		"model":   req.Model,
-		"content": "you said: " + last,
+		"provider": s.Provider.Name(),
+		"model":    resp.Model,
+		"content":  resp.Content,
 	})
 }
 
